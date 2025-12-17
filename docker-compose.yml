@@ -1,0 +1,36 @@
+services:
+  mongodb:
+    image: mongo:8
+    ports:
+      - "27017:27017"
+    environment:
+      - MONGO_INITDB_DATABASE=aiwrap
+    volumes:
+      - mongodb_data:/data/db
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+
+  ai-wrap:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8089:8089"
+    volumes:
+      - .:/app
+      - /app/tmp
+      - ./.cache:/app/.cache
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017
+      - REDIS_URI=redis://redis:6379
+    env_file:
+      - .env
+    depends_on:
+      - mongodb
+      - redis
+
+volumes:
+  mongodb_data:

@@ -1,0 +1,31 @@
+# git
+.git
+.gitignore
+
+# docker
+docker-compose*.yml
+Dockerfile*
+.dockerignore
+
+# build artifacts
+tmp/
+*.exe
+*.test
+*.out
+
+# frontend build artifacts
+app/node_modules/
+app/.next/
+app/out/
+
+# docs
+README.md
+CLAUDE.md
+know-how/
+
+# ci/cd
+.github/
+
+# misc
+.DS_Store
+*.log

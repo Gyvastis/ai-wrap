@@ -1,0 +1,33 @@
+cache:
+  max_temp: 0.3
+
+costs:
+  max_cost: 0.01
+  models:
+    - name: gemini-2.5-pro
+      input: 1.25
+      output: 10.0
+    - name: gemini-2.5-flash
+      input: 0.075
+      output: 0.30
+    - name: gemini-2.5-flash-lite
+      input: 0.10
+      output: 0.40
+    - name: gemini-2.0-flash
+      input: 0.10
+      output: 0.40
+    - name: gemini-2.0-flash-lite
+      input: 0.075
+      output: 0.30
+    - name: gemini-flash-latest
+      input: 0.075
+      output: 0.30
+    - name: gemini-flash-lite-latest
+      input: 0.015
+      output: 0.06
+    - name: gemini-1.5-flash
+      input: 0.15
+      output: 0.60
+    - name: gemini-1.5-pro
+      input: 1.25
+      output: 5.00

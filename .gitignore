@@ -1,0 +1,30 @@
+# binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+/tmp/
+main
+
+# test binary
+*.test
+
+# output of the go coverage tool
+*.out
+
+# cache
+.cache/
+
+# build artifacts
+tmp/
+build-errors.log
+
+# ide
+.idea/
+.vscode/
+*.swp
+*.swo
+
+.playwright-mcp/
+.claude/
