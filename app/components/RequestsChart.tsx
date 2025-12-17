@@ -7,7 +7,7 @@ interface RequestsChartProps {
 }
 
 function fillMissingBuckets(data: TimeSeriesData[], duration: "24h" | "7d"): TimeSeriesData[] {
-  const dataMap = new Map(data.map((d) => [d.timestamp, d.count]));
+  const dataMap = new Map((data || []).map((d) => [d.timestamp, d.count]));
   const filled: TimeSeriesData[] = [];
 
   const now = new Date();

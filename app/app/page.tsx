@@ -44,7 +44,7 @@ export default function Home() {
       const res = await fetch(`/api/admin/timeseries?duration=${duration}`, { cache: "no-store" });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
-      setTimeSeriesData(data);
+      setTimeSeriesData(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Failed to fetch timeseries:", error);
       setTimeSeriesData([]);
