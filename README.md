@@ -2,6 +2,8 @@
 
 minimal go proxy for gemini llm with redis caching, mongodb logging, cost blocking, and key rotation
 
+
+
 ## features
 
 - proxies gemini api (same request/response format)
