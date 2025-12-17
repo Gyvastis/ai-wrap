@@ -2,7 +2,7 @@
 
 minimal go proxy for gemini llm with redis caching, mongodb logging, cost blocking, and key rotation
 
-
+![ai wrap](Screenshot 2025-12-17 at 13.34.54.png "AI Wrap")
 
 ## features
 
