@@ -2,7 +2,7 @@
 
 ## how it works
 
-1. load keys from `data/gemini_capabilities.csv`
+1. load keys from `data/keys.csv`
 2. filter only `active=true` keys
 3. random selection on each request
 4. on failure → rotate through all available keys (one by one)
@@ -11,8 +11,8 @@
 ## csv format
 
 ```csv
-key,provider,active,text,image,video,audio,embedding,thinking,pro,total_models,checked_at
-AIza...,gemini,true,true,false,false,false,false,false,false,50,2025-11-13T06:56:43Z
+key,provider,active
+AIza...,gemini,true
 ```
 
 uses `github.com/gocarina/gocsv` for parsing

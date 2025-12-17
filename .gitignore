@@ -28,3 +28,6 @@ build-errors.log
 
 .playwright-mcp/
 .claude/
+
+# sensitive data
+data/*.csv

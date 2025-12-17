@@ -9,8 +9,6 @@ import { DurationToggle } from "@/components/DurationToggle";
 import { RequestsChart } from "@/components/RequestsChart";
 import { RefreshCw } from "lucide-react";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8089";
-
 export default function Home() {
   const [duration, setDuration] = useState<"24h" | "7d">("24h");
   const [stats, setStats] = useState<StatsType | null>(null);
@@ -31,7 +29,7 @@ export default function Home() {
 
   const fetchStats = async () => {
     try {
-      const res = await fetch(`${API_URL}/admin/stats?duration=${duration}`);
+      const res = await fetch(`/api/admin/stats?duration=${duration}`, { cache: "no-store" });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setStats(data);
@@ -43,7 +41,7 @@ export default function Home() {
 
   const fetchTimeSeries = async () => {
     try {
-      const res = await fetch(`${API_URL}/admin/timeseries?duration=${duration}`);
+      const res = await fetch(`/api/admin/timeseries?duration=${duration}`, { cache: "no-store" });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setTimeSeriesData(data);
@@ -56,7 +54,7 @@ export default function Home() {
   const fetchRequests = async (page: number) => {
     setLoading(true);
     try {
-      const res = await fetch(`${API_URL}/admin/requests?page=${page}&per_page=20`);
+      const res = await fetch(`/api/admin/requests?page=${page}&per_page=20`, { cache: "no-store" });
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       setRequestsData(data);

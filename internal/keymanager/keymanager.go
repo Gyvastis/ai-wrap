@@ -5,24 +5,14 @@ import (
 	"math/rand"
 	"os"
 	"sync"
-	"time"
 
 	"github.com/gocarina/gocsv"
 )
 
 type Key struct {
-	Value      string    `csv:"key"`
-	Provider   string    `csv:"provider"`
-	Active     bool      `csv:"active"`
-	Text       bool      `csv:"text"`
-	Image      bool      `csv:"image"`
-	Video      bool      `csv:"video"`
-	Audio      bool      `csv:"audio"`
-	Embedding  bool      `csv:"embedding"`
-	Thinking   bool      `csv:"thinking"`
-	Pro        bool      `csv:"pro"`
-	TotalModels int      `csv:"total_models"`
-	CheckedAt  time.Time `csv:"checked_at"`
+	Value    string `csv:"key"`
+	Provider string `csv:"provider"`
+	Active   bool   `csv:"active"`
 }
 
 type KeyManager struct {

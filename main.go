@@ -26,7 +26,7 @@ func main() {
 		log.Printf("  - %s", model.Name)
 	}
 
-	km, err := keymanager.New("data/gemini_capabilities.csv")
+	km, err := keymanager.New("data/keys.csv")
 	if err != nil {
 		log.Printf("warning: failed to load keys from csv: %v", err)
 		log.Printf("will accept user-provided api keys only")

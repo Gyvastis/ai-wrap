@@ -41,4 +41,17 @@ builds push to docker hub on main:
 
 env vars: `PORT`, `MONGO_URI`, `REDIS_URI`, `GEMINI_TIMEOUT`
 
+## api keys
+
+optional `data/keys.csv` for key rotation:
+
+```csv
+key,provider,active
+AIza...,gemini,true
+```
+
+- only `active=true` keys are used
+- on failure, rotates through all available keys
+- if csv missing/empty, uses `GEMINI_API_KEY` env var
+
 see `CLAUDE.md` for dev workflow, `know-how/*.md` for implementation details

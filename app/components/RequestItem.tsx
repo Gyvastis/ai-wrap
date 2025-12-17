@@ -6,8 +6,6 @@ import { ChevronDown, ChevronUp, Loader2 } from "lucide-react";
 import { RequestHeader } from "./RequestHeader";
 import { RequestDetails } from "./RequestDetails";
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8089";
-
 interface RequestItemProps {
   request: RequestLog;
   isExpanded: boolean;
@@ -22,7 +20,7 @@ export function RequestItem({ request, isExpanded, onToggle }: RequestItemProps)
     if (!isExpanded && !details) {
       setLoading(true);
       try {
-        const res = await fetch(`${API_URL}/admin/requests/${request.ID}`);
+        const res = await fetch(`/api/admin/requests/${request.ID}`, { cache: "no-store" });
         if (res.ok) {
           const data = await res.json();
           setDetails(data);
