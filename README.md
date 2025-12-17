@@ -32,8 +32,8 @@ response headers: `X-Cost-Total`, `X-Cache-Status`, `X-Key-Source`
 ## docker images
 
 builds push to docker hub on main:
-- `gyvastis/ai-wrap-api:latest`
-- `gyvastis/ai-wrap-app:latest`
+- [gyvastis/ai-wrap-api](https://hub.docker.com/r/gyvastis/ai-wrap-api)
+- [gyvastis/ai-wrap-app](https://hub.docker.com/r/gyvastis/ai-wrap-app)
 
 ## config
 
