@@ -4,15 +4,36 @@ import (
 	"fmt"
 	"math/rand"
 	"os"
+	"sort"
+	"strings"
 	"sync"
+	"time"
 
 	"github.com/gocarina/gocsv"
 )
 
+// model priority - lower index = higher priority (newest/best first)
+// image models commented out for now
+var modelPriority = []string{
+	"gemini-3-pro-preview",
+	// "gemini-3-pro-image-preview",
+	// "gemini-2.5-flash-image",
+	"gemini-2.5-pro",
+	"gemini-flash-latest",
+	"gemini-flash-lite-latest",
+	"gemini-2.5-flash",
+	"gemini-2.5-flash-lite",
+	"gemini-2.0-flash",
+	"gemini-2.0-flash-lite",
+}
+
 type Key struct {
-	Value    string `csv:"key"`
-	Provider string `csv:"provider"`
-	Active   bool   `csv:"active"`
+	Value         string    `csv:"key"`
+	Provider      string    `csv:"provider"`
+	Active        bool      `csv:"active"`
+	WorkingModels string    `csv:"working_models"`
+	CheckedAt     time.Time `csv:"checked_at"`
+	priority      int       // computed, not from csv
 }
 
 type KeyManager struct {
@@ -33,6 +54,27 @@ func New(csvPath string) (*KeyManager, error) {
 	return km, nil
 }
 
+// getBestPriority returns the best (lowest) priority for a key's working models
+func getBestPriority(workingModels string) int {
+	models := strings.Split(workingModels, "|")
+	best := len(modelPriority) + 1 // worst possible
+
+	for _, model := range models {
+		// strip "models/" prefix if present
+		model = strings.TrimPrefix(model, "models/")
+		for i, pm := range modelPriority {
+			if model == pm {
+				if i < best {
+					best = i
+				}
+				break
+			}
+		}
+	}
+
+	return best
+}
+
 func (km *KeyManager) loadKeys() error {
 	file, err := os.Open(km.csvPath)
 	if err != nil {
@@ -48,9 +90,15 @@ func (km *KeyManager) loadKeys() error {
 	var activeKeys []Key
 	for _, key := range allKeys {
 		if key.Active {
+			key.priority = getBestPriority(key.WorkingModels)
 			activeKeys = append(activeKeys, key)
 		}
 	}
+
+	// sort by priority (lower = better)
+	sort.Slice(activeKeys, func(i, j int) bool {
+		return activeKeys[i].priority < activeKeys[j].priority
+	})
 
 	km.mu.Lock()
 	km.keys = activeKeys
@@ -67,8 +115,20 @@ func (km *KeyManager) GetKey() string {
 		return ""
 	}
 
-	idx := rand.Intn(len(km.keys))
-	return km.keys[idx].Value
+	// find all keys with the best (lowest) priority
+	bestPriority := km.keys[0].priority
+	var bestKeys []Key
+	for _, k := range km.keys {
+		if k.priority == bestPriority {
+			bestKeys = append(bestKeys, k)
+		} else {
+			break // already sorted, no need to continue
+		}
+	}
+
+	// random among best keys
+	idx := rand.Intn(len(bestKeys))
+	return bestKeys[idx].Value
 }
 
 func (km *KeyManager) RotateKey(failedKey string) string {
@@ -88,8 +148,19 @@ func (km *KeyManager) RotateKey(failedKey string) string {
 		return ""
 	}
 
-	idx := rand.Intn(len(km.keys))
-	return km.keys[idx].Value
+	// return best available key
+	bestPriority := km.keys[0].priority
+	var bestKeys []Key
+	for _, k := range km.keys {
+		if k.priority == bestPriority {
+			bestKeys = append(bestKeys, k)
+		} else {
+			break
+		}
+	}
+
+	idx := rand.Intn(len(bestKeys))
+	return bestKeys[idx].Value
 }
 
 func (km *KeyManager) ActiveCount() int {

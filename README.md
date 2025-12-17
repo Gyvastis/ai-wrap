@@ -46,11 +46,12 @@ env vars: `PORT`, `MONGO_URI`, `REDIS_URI`, `GEMINI_TIMEOUT`
 optional `data/keys.csv` for key rotation:
 
 ```csv
-key,provider,active
-AIza...,gemini,true
+key,provider,active,working_models,checked_at
+AIza...,gemini,true,models/gemini-2.5-flash|models/gemini-2.0-flash,2025-12-17T11:25:25Z
 ```
 
 - only `active=true` keys are used
+- keys sorted by model priority (newest models first)
 - on failure, rotates through all available keys
 - if csv missing/empty, uses `GEMINI_API_KEY` env var
 
