@@ -104,7 +104,7 @@ export default function Home() {
 
           {loading ? (
             <div className="text-center py-12 text-gray-500">Loading...</div>
-          ) : requestsData?.requests?.length > 0 ? (
+          ) : requestsData && requestsData.requests && requestsData.requests.length > 0 ? (
             <>
               <RequestsList requests={requestsData.requests} />
               <Pagination
